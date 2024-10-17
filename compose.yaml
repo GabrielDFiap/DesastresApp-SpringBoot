@@ -1,0 +1,31 @@
+services:
+  db:
+    # Nome do container
+    container_name: oracle-db
+    # Utiliza a imagem oficial do Oracle XE (versão leve do Oracle Database)
+    image: "gvenzl/oracle-xe"
+    # Mapeia a porta interna 1521 (Oracle) para a porta 1522 no host
+    ports:
+      - "1522:1521"
+   
+    environment:
+      # Define a senha para o usuário SYSTEM do banco
+      - ORACLE_PASSWORD=fiap123 
+      # Permite conexões externas ao banco de dados
+      - ORACLE_ALLOW_REMOTE=true 
+
+  api:
+    # Constrói a aplicação usando o Dockerfile localizado na raiz do projeto
+    build: . 
+    # Mapeia a porta 8080 da aplicação no container para a mesma porta no host
+    ports:
+      - "8080:8080" 
+    environment:
+    # Define qual perfil a aplicação usará
+      - PROFILE=prd 
+      # URL de conexão com o banco de dados Oracle, apontando para o host local e porta 1522
+      - DATABASE_URL=jdbc:oracle:thin:@localhost:1522:ORCL 
+      # Usuário do banco para a conexão
+      - DATABASE_USER=RM551506 
+      # Senha para autenticação no banco de dados
+      - DATABASE_PWD=091199 
