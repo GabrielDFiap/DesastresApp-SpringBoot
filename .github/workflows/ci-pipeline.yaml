@@ -1,0 +1,25 @@
+name: CI Pipeline
+on: # Executa quando um PR é aberto ou reaberto para branches que começam com feature/, fix/ ou refactor/
+    pull_request:
+        types: [opened, reopened]
+        branches: ["feature/**", "fix/**", "refactor/**"]
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        # O job tests roda em uma máquina com Ubuntu
+        steps:             
+        -  # Baixa o código do PR
+            name: Git Checkout 
+            uses: actions/checkout@v4 
+ 
+            # Instala e configura o Java 21 da distribuição Temurin.
+        -   name: Setup Java SDK 
+            uses: actions/setup-java@v4 
+            with: 
+              distribution: 'temurin'  
+              java-version: '21' 
+            # Executa os testes unitários com o Maven.
+        -   name: Unit tests
+            run: mvn test
+
+
